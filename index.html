@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아파트 대출 계산기</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="min-h-screen bg-gray-50 py-10">
+<div class="container mx-auto px-4 max-w-6xl">
+    <!-- 헤더 섹션 -->
+    <header class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-indigo-800 mb-4">아파트 대출 계산기</h1>
+        <p class="text-gray-600 max-w-3xl mx-auto">
+            아파트 구매 시 대출 가능 금액과 월 상환액을 간편하게 계산해보세요. 정확한 대출 계획을 세우는 데 도움이 됩니다.
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- 입력 섹션 -->
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">대출 정보 입력</h2>
+
+            <!-- 부동산 정보 그룹 -->
+            <div class="mb-8">
+                <h3 class="text-lg font-medium text-indigo-700 mb-4 pb-2 border-b border-gray-200">부동산 정보</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="propertyCount">담보 부동산 지역 및 주택수</label>
+                        <input
+                                type="text"
+                                id="propertyCount"
+                                name="propertyCount"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                placeholder="주택 수 입력"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="kbPrice">KB시세 <span class="text-red-500 text-sm ml-1">*</span></label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="kbPrice"
+                                    name="kbPrice"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="KB시세 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">원</div>
+                        </div>
+                        <a
+                                href="https://kbland.kr/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-indigo-600 text-xs hover:underline mt-1 inline-block cursor-pointer"
+                        >
+                            KB시세 조회하러 가기 <i class="fas fa-external-link-alt text-xs ml-1"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="depositAmount">임대보증금</label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="depositAmount"
+                                    name="depositAmount"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="임대보증금 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">원</div>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-1">실거주시 공란</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 대출 조건 그룹 -->
+            <div class="mb-8">
+                <h3 class="text-lg font-medium text-indigo-700 mb-4 pb-2 border-b border-gray-200">대출 조건</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="ltv">대출가능 LTV <span class="text-red-500 text-sm ml-1">*</span></label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="ltv"
+                                    name="ltv"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="LTV 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="dsr">대출가능 DSR</label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="dsr"
+                                    name="dsr"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="DSR 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 기존 대출 정보 그룹 -->
+            <div class="mb-8">
+                <h3 class="text-lg font-medium text-indigo-700 mb-4 pb-2 border-b border-gray-200">기존 대출 정보</h3>
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="existingLoanAmount">보유주택 대출 금액</label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="existingLoanAmount"
+                                    name="existingLoanAmount"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="기존 대출 금액 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">원</div>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-1">무주택 및 무대출자 해당없음 주담대금리 4.5%, 기간 360개월, 원리금균등 적용</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 소득 정보 그룹 -->
+            <div class="mb-8">
+                <h3 class="text-lg font-medium text-indigo-700 mb-4 pb-2 border-b border-gray-200">소득 정보</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="myIncome">내 소득 <span class="text-red-500 text-sm ml-1">*</span></label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="myIncome"
+                                    name="myIncome"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="연간 소득 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">원</div>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-1">원천징수영수증 및 소득금액증명원 기준</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="spouseIncome">배우자 소득</label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="spouseIncome"
+                                    name="spouseIncome"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="배우자 연간 소득 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">원</div>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-1">배우자소득 합산기준(증빙소득+증빙소득), 배우자소득합산 시 배우자부채 입력 필수</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신용대출 정보 그룹 -->
+            <div class="mb-8">
+                <h3 class="text-lg font-medium text-indigo-700 mb-4 pb-2 border-b border-gray-200">신용대출 정보</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="myCreditLoan">내 신용 대출 금액</label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="myCreditLoan"
+                                    name="myCreditLoan"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="신용 대출 금액 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">원</div>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-1">신용대출, 마이너스통장개설, 카드론, 현금서비스 / 예금담보대출, 보험약관대출 등 / 신용대출금리 6%, 기간 60개월, 원리금균등 적용</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="spouseCreditLoan">배우자 신용 대출 금액</label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="spouseCreditLoan"
+                                    name="spouseCreditLoan"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="배우자 신용 대출 금액 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">원</div>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-1">신용대출, 마이너스통장개설, 카드론, 현금서비스 / 예금담보대출, 보험약관대출 등 / 신용대출금리 6%, 기간 60개월, 원리금균등 적용</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신규 대출 조건 그룹 -->
+            <div class="mb-8">
+                <h3 class="text-lg font-medium text-indigo-700 mb-4 pb-2 border-b border-gray-200">신규 대출 조건</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="expectedInterestRate">예상 대출 금리 <span class="text-red-500 text-sm ml-1">*</span></label>
+                        <div class="relative">
+                            <input
+                                    type="text"
+                                    id="expectedInterestRate"
+                                    name="expectedInterestRate"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                    placeholder="예상 금리 입력"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="loanPeriod">대출기간(개월) <span class="text-red-500 text-sm ml-1">*</span></label>
+                        <input
+                                type="text"
+                                id="loanPeriod"
+                                name="loanPeriod"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                                placeholder="대출 기간 입력"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- 버튼 그룹 -->
+            <div class="flex justify-center gap-4 mt-8">
+                <button
+                        id="resetButton"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition duration-200 ease-in-out !rounded-button whitespace-nowrap cursor-pointer"
+                >
+                    <i class="fas fa-redo-alt mr-2"></i> 입력값 초기화
+                </button>
+                <button
+                        id="calculateButton"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200 ease-in-out !rounded-button whitespace-nowrap cursor-pointer"
+                >
+                    <i class="fas fa-calculator mr-2"></i> 계산하기
+                </button>
+            </div>
+
+            <!-- 필수 입력 항목 안내 -->
+            <div class="text-center mt-4">
+                <p class="text-gray-500 text-sm">
+                    <span class="text-red-500">*</span> 표시는 필수 입력 항목입니다
+                </p>
+            </div>
+        </div>
+
+        <!-- 결과 섹션 -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">계산 결과</h2>
+
+                <!-- 주택담보대출 가능 금액 -->
+                <div class="bg-indigo-50 rounded-lg p-5 mb-6">
+                    <h3 class="text-lg font-medium text-indigo-800 mb-2">주택담보대출 가능 금액</h3>
+                    <p class="text-3xl font-bold text-indigo-700">
+                        <span id="possibleLoanAmount">0</span> <span class="text-lg">원</span>
+                    </p>
+                    <p class="text-gray-600 text-sm mt-2">KB시세의  비율에 따라 계산된 최대 대출 가능 금액입니다.</p>
+                </div>
+
+                <!-- 매월 주택담보대출 상환금액 -->
+                <div class="bg-blue-50 rounded-lg p-5 mb-6">
+                    <h3 class="text-lg font-medium text-blue-800 mb-2">매월 주택담보대출 상환금액</h3>
+                    <p class="text-3xl font-bold text-blue-700">
+                        <span id="monthlyRepayment">0</span> <span class="text-lg">원</span>
+                    </p>
+                    <p class="text-gray-600 text-sm mt-2">원리금균등상환 기준으로 계산된 월 상환액입니다.</p>
+                </div>
+
+                <!-- 투자시 필요 자기자본 -->
+                <div class="bg-purple-50 rounded-lg p-5 mb-6">
+                    <h3 class="text-lg font-medium text-purple-800 mb-2">투자시 필요 자기자본</h3>
+                    <p class="text-3xl font-bold text-purple-700">
+                        <span id="requiredCapital">0</span> <span class="text-lg">원</span>
+                    </p>
+                    <p class="text-gray-600 text-sm mt-2">부동산 수수료, 취득세 및 법무비용 제외한 필요 자기자본입니다.</p>
+                </div>
+
+                <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <h4 class="text-sm font-medium text-gray-700 mb-2">참고사항</h4>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• 본 계산기는 참고용으로만 사용하시기 바랍니다.</li>
+                        <li>• 실제 대출 가능 금액은 금융기관의 심사 결과에 따라 달라질 수 있습니다.</li>
+                        <li>• 정확한 대출 조건은 해당 금융기관에 문의하시기 바랍니다.</li>
+                    </ul>
+                </div>
+
+                <div id="consultDiv" class="mt-4 hidden">
+                    <a
+                            href="https://open.kakao.com/o/YOUR_KAKAO_LINK"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="block w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg transition duration-200 ease-in-out text-center !rounded-button whitespace-nowrap"
+                    >
+                        <i class="fas fa-comments mr-2"></i> 전문가 상담받기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="mt-16 text-center text-gray-500 text-sm">
+        <p>© 2025 아파트 대출 계산기. All rights reserved.</p>
+        <p class="mt-1">본 계산기는 참고용으로만 사용하시기 바랍니다.</p>
+    </footer>
+</div>
+
+<script>
+    // DOM 요소 가져오기
+    const inputs = {
+        propertyCount: document.getElementById('propertyCount'),
+        kbPrice: document.getElementById('kbPrice'),
+        depositAmount: document.getElementById('depositAmount'),
+        ltv: document.getElementById('ltv'),
+        dsr: document.getElementById('dsr'),
+        existingLoanAmount: document.getElementById('existingLoanAmount'),
+        myIncome: document.getElementById('myIncome'),
+        spouseIncome: document.getElementById('spouseIncome'),
+        myCreditLoan: document.getElementById('myCreditLoan'),
+        spouseCreditLoan: document.getElementById('spouseCreditLoan'),
+        expectedInterestRate: document.getElementById('expectedInterestRate'),
+        loanPeriod: document.getElementById('loanPeriod')
+    };
+
+    const results = {
+        possibleLoanAmount: document.getElementById('possibleLoanAmount'),
+        monthlyRepayment: document.getElementById('monthlyRepayment'),
+        requiredCapital: document.getElementById('requiredCapital')
+    };
+
+    const resetButton = document.getElementById('resetButton');
+    const calculateButton = document.getElementById('calculateButton');
+    const consultDiv = document.getElementById('consultDiv');
+
+    // 입력 필드에 숫자만 입력되도록 제한하는 이벤트 리스너
+    for (const key in inputs) {
+        const input = inputs[key];
+        input.addEventListener('input', function(e) {
+            const isPercentField = ['ltv', 'dsr', 'expectedInterestRate'].includes(key);
+
+            if (isPercentField) {
+                // 퍼센트 입력 필드는 소수점 허용
+                if (!/^\d*\.?\d*$/.test(e.target.value)) {
+                    e.target.value = e.target.value.replace(/[^\d.]/g, '');
+                }
+            } else {
+                // 일반 숫자 입력 필드
+                if (!/^\d*$/.test(e.target.value)) {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                }
+            }
+        });
+    }
+
+    // 숫자 포맷팅 함수 (천 단위 구분자)
+    function formatNumber(num) {
+        return num.toLocaleString('ko-KR', { maximumFractionDigits: 0 });
+    }
+
+    // 입력값 초기화 함수
+    resetButton.addEventListener('click', function() {
+        for (const key in inputs) {
+            inputs[key].value = '';
+        }
+
+        // 결과 초기화
+        results.possibleLoanAmount.textContent = '0';
+        results.monthlyRepayment.textContent = '0';
+        results.requiredCapital.textContent = '0';
+
+        // 상담 버튼 숨기기
+        consultDiv.classList.add('hidden');
+    });
+
+    // 계산 함수
+    calculateButton.addEventListener('click', function() {
+        // 필수 입력 항목 검증
+        const requiredFields = {
+            kbPrice: 'KB시세',
+            ltv: '대출가능 LTV',
+            myIncome: '내 소득',
+            expectedInterestRate: '예상 대출 금리',
+            loanPeriod: '대출기간'
+        };
+
+        const emptyFields = Object.entries(requiredFields)
+            .filter(([key]) => !inputs[key].value)
+            .map(([, label]) => label);
+
+        if (emptyFields.length > 0) {
+            const message = document.createElement('div');
+            message.className = 'fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg';
+            message.innerHTML = `
+          <div class="flex items-center">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <div>
+              <p class="font-medium">다음 필수 항목을 입력해주세요:</p>
+              <p class="text-sm mt-1">${emptyFields.join(', ')}</p>
+            </div>
+          </div>
+        `;
+            document.body.appendChild(message);
+            setTimeout(() => {
+                document.body.removeChild(message);
+            }, 3000);
+            return;
+        }
+
+        // 입력값 가져오기
+        const kbPriceNum = Number(inputs.kbPrice.value);
+        const depositAmountNum = inputs.depositAmount.value === '' ? 0 : Number(inputs.depositAmount.value);
+        const ltvNum = Number(inputs.ltv.value) / 100; // 퍼센트를 소수로 변환
+        const myIncomeNum = Number(inputs.myIncome.value);
+        const spouseIncomeNum = inputs.spouseIncome.value === '' ? 0 : Number(inputs.spouseIncome.value);
+        const interestRateNum = Number(inputs.expectedInterestRate.value) / 100; // 퍼센트를 소수로 변환
+        const loanPeriodNum = Number(inputs.loanPeriod.value);
+
+        // 주택담보대출 가능 금액 계산
+        const ltvBasedAmount = kbPriceNum * ltvNum - depositAmountNum;
+        const monthlyIncome = (myIncomeNum + spouseIncomeNum) / 12;
+        const monthlyInterestRate = interestRateNum / 12;
+        const amortizationFactor = 1 - Math.pow(1 + monthlyInterestRate, -loanPeriodNum);
+        const dsrBasedAmount = (monthlyIncome * 0.4 - 966640) / (monthlyInterestRate / amortizationFactor);
+        const possibleLoanAmount = Math.min(ltvBasedAmount, dsrBasedAmount);
+
+        // 매월 주택담보대출 상환금액 계산
+        const monthlyRepayment = (possibleLoanAmount * monthlyInterestRate) / amortizationFactor;
+
+        // 투자시 필요 자기자본 계산
+        const requiredCapital = kbPriceNum - possibleLoanAmount - depositAmountNum;
+
+        // 결과 업데이트
+        results.possibleLoanAmount.textContent = formatNumber(Math.max(0, possibleLoanAmount));
+        results.monthlyRepayment.textContent = formatNumber(Math.max(0, monthlyRepayment));
+        results.requiredCapital.textContent = formatNumber(Math.max(0, requiredCapital));
+
+        // 대출 가능 금액이 있을 경우 상담 버튼 표시
+        if (possibleLoanAmount > 0) {
+            consultDiv.classList.remove('hidden');
+        } else {
+            consultDiv.classList.add('hidden');
+        }
+
+        // 성공 메시지 표시
+        const message = document.createElement('div');
+        message.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg';
+        message.innerHTML = `
+        <div class="flex items-center">
+          <i class="fas fa-check-circle mr-2"></i>
+          <div>
+            <p class="font-medium">계산이 완료되었습니다!</p>
+          </div>
+        </div>
+      `;
+        document.body.appendChild(message);
+        setTimeout(() => {
+            document.body.removeChild(message);
+        }, 3000);
+
+        // 구글 시트 저장 함수 호출 (실제 구현 시 활성화)
+        // saveToGoogleSheets({
+        //   ...getInputValues(),
+        //   possibleLoanAmount: possibleLoanAmount,
+        //   monthlyRepayment: monthlyRepayment,
+        //   requiredCapital: requiredCapital
+        // });
+    });
+
+    // 모든 입력값을 객체로 반환하는 함수
+    function getInputValues() {
+        const values = {};
+        for (const key in inputs) {
+            values[key] = inputs[key].value;
+        }
+        return values;
+    }
+
+    // 구글 시트에 데이터 저장하는 함수 (구현되지 않음)
+    async function saveToGoogleSheets(data) {
+        try {
+            // 구글 시트 API 엔드포인트로 데이터 전송 (예시 코드)
+            // const response = await fetch('YOUR_GOOGLE_SHEETS_API_ENDPOINT', {
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'application/json',
+            //   },
+            //   body: JSON.stringify({
+            //     timestamp: new Date().toISOString(),
+            //     ...data
+            //   }),
+            // });
+            // if (!response.ok) {
+            //   throw new Error('Failed to save data');
+            // }
+            console.log('Data would be saved:', data);
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
+    }
+</script>
+</body>
+</html>
